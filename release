@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+use File::Copy;
+use Template;
+use YAML 'LoadFile';
+use constant TT => '/home/dave/src/release';
+
+my $meta = LoadFile('META.yml');
+
+my $build;
+if (-f 'Build.PL') {
+  $build = { start => './Build.PL', cmd => './Build' };
+} else {
+  $build = { start => './Makefile.PL', cmd => 'make' };
+}
+
+system "perl $build->{start}";
+system "cover -delete";
+system "HARNESS_PERL_SWITCHES=-MDevel::Cover $build->{cmd} test";
+system "cover";
+
+mkdir "$meta->{name}";
+mkdir "$meta->{name}/cover";
+foreach (<cover_db/*.html>, <cover_db/*.css>) {
+  s|^cover_db/||;
+  copy "cover_db/$_", "$meta->{name}/cover/$_";
+}
+move "$meta->{name}/cover/coverage.html", "$meta->{name}/cover/index.html";
+
+my $t = Template->new({INCLUDE_PATH => TT});
+$t->process('index.tt', {}, "$meta->{name}/index.html")
+  or die $t->error;
+
+my $ver = "$meta->{name}-$meta->{version}";
+copy "$ver.tar.gz", "$meta->{name}";
+chdir "$meta->{name}";
+system "zcat $ver.tar.gz | tar xvf -";
+move $ver, 'dist';
+chdir '..';
+system "scp -r ./$meta->{name} davorg\@dave.org.uk:httpdocs/code/";

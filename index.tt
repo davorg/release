@@ -1,0 +1,28 @@
+[% USE YAML;
+   meta = YAML.undumpfile('META.yml') -%]
+<html>
+  <head>
+    <link rel="stylesheet" href="/dave.css" type="text/css" />
+    <title>[% meta.name %]</title>
+  </head>
+  <body>
+    <h1>[% meta.name %]</h1>
+    <p>Current version [% meta.version %]</p>
+    <p>[% meta.abstract | html %]</p>
+    <ul>
+      <li>Download <a href="[% meta.name %]-[% meta.version %].tar.gz">latest version</a></li>
+      <li>View <a href="dist/README">README</a></li>
+      <li>Browse <a href="dist">distribution</a></li>
+      <li>View <a href="cover">test coverage</a></li>
+      <li>Modules:
+        <ul>[% IF meta.provides.keys.size;
+             FOREACH module IN meta.provides.keys %]
+          <li><a href="/cgi-bin/pod?/code/[% meta.name %]/dist/[% meta.provides.$module.file %]">[% module %]</a> ([% meta.provides.$module.version %])</li>
+            [% END %]
+        [% ELSE %]
+          <li><a href="/cgi-bin/pod?/code/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
+        [% END %]</ul></li>
+      <li>Browse <a href="http://cvs.dave.org.uk/index.cgi/[% meta.name %]/">cvs</a></li>
+    </ul>
+  </body>
+</html>

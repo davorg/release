@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+package Pod::POM::View::HTML::davorg;
+
+use base 'Pod::POM::View::HTML';
+
+sub view_pod {
+  my ($self, $pod) = @_;
+
+  my $content = $pod->content->present($self);
+  $content =~ s|</pre>\n\n<pre>|\n\n|g;
+
+  return '<html>
+  <head>
+    <link rel="stylesheet" href="/dave.css" type="text/css" />
+    <link rel="stylesheet" href="/code/style.css" type="text/css" />
+  </head>
+  <body>' .
+  $content .
+  '  </body>
+</html>';
+}
+
+package main;
+
+use Pod::POM;
+use Cwd;
+use CGI qw(header);
+use CGI::Carp 'fatalsToBrowser';
+
+my $file = "$ENV{DOCUMENT_ROOT}/$ENV{QUERY_STRING}";
+
+unless (-e $file) {
+  die "No such file: $file";
+}
+
+my $p = Pod::POM->new;
+my $pom = $p->parse_file($file);
+print header, Pod::POM::View::HTML::davorg->print($pom);
+
