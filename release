@@ -5,6 +5,9 @@ use Template;
 use YAML 'LoadFile';
 use constant TT => '/home/dave/src/release';
 
+die "Can't find META.yml\n" unless -f 'META.yml';
+die "META.yml is empty\n"   if -z 'META.yml';
+
 my $meta = LoadFile('META.yml');
 
 my $build;
@@ -27,12 +30,17 @@ foreach (<cover_db/*.html>, <cover_db/*.css>) {
 }
 move "$meta->{name}/cover/coverage.html", "$meta->{name}/cover/index.html";
 
+my $rpm = -e "perl-$meta->{name}-$meta->{version}.1.noarch.rpm";
+
 my $t = Template->new({INCLUDE_PATH => TT});
-$t->process('index.tt', {}, "$meta->{name}/index.html")
+$t->process('index.tt', { rpm => $rpm }, "$meta->{name}/index.html")
   or die $t->error;
 
 my $ver = "$meta->{name}-$meta->{version}";
-copy "$ver.tar.gz", "$meta->{name}";
+copy "$ver.tar.gz", $meta->{name};
+if ($rpm) {
+  copy $_, $meta->{name} for <perl-*.rpm>
+}
 chdir "$meta->{name}";
 system "zcat $ver.tar.gz | tar xvf -";
 move $ver, 'dist';
