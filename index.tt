@@ -3,6 +3,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="/dave.css" type="text/css" />
+    <link rel="stylesheet" href="/code/style.css" type="text/css" />
     <title>[% meta.name %]</title>
   </head>
   <body>
@@ -23,6 +24,12 @@
           <li><a href="/cgi-bin/pod?/code/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
         [% END %]</ul></li>
       <li>Browse <a href="http://cvs.dave.org.uk/index.cgi/[% meta.name %]/">cvs</a></li>
+      <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a></li>
+      <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
+      <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</li>
+[% IF rpm -%]
+      <li><a href="perl-[% meta.name %]-[% meta.version %].1.noarch.rpm">RPM</a></li>
+[% END -%]
     </ul>
   </body>
 </html>
