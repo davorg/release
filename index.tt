@@ -1,6 +1,9 @@
 [% USE YAML;
    meta = YAML.undumpfile('META.yml') -%]
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <link rel="stylesheet" href="/dave.css" type="text/css" />
     <link rel="stylesheet" href="/code/style.css" type="text/css" />
@@ -26,9 +29,10 @@
       <li>Browse <a href="http://cvs.dave.org.uk/index.cgi/[% meta.name %]/">cvs</a></li>
       <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a></li>
       <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
-      <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</li>
+      <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</a></li>
 [% IF rpm -%]
-      <li><a href="perl-[% meta.name %]-[% meta.version %].1.noarch.rpm">RPM</a></li>
+      <li><a href="perl-[% meta.name %]-[% meta.version %]-1.noarch.rpm">RPM</a > /
+      <a href="perl-[% meta.name %]-[% meta.version %]-1.src.rpm">Source RPM</a></li>
 [% END -%]
     </ul>
   </body>
