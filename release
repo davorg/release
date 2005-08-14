@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
+use strict;
+use warnings;
+
 use File::Copy;
+use File::Path;
 use Template;
 use YAML 'LoadFile';
 use constant TT => '/home/dave/src/release';
@@ -21,6 +25,8 @@ system "perl $build->{start}";
 system "cover -delete";
 system "HARNESS_PERL_SWITCHES=-MDevel::Cover $build->{cmd} test";
 system "cover";
+
+rmtree($meta->{name}) if -d $meta->{name};
 
 mkdir "$meta->{name}";
 mkdir "$meta->{name}/cover";
@@ -45,4 +51,5 @@ chdir "$meta->{name}";
 system "zcat $ver.tar.gz | tar xvf -";
 move $ver, 'dist';
 chdir '..';
+system "ssh davorg\@dave.org.uk rm -rf httpdocs/code/$meta->{name}";
 system "scp -r ./$meta->{name} davorg\@dave.org.uk:httpdocs/code/";
