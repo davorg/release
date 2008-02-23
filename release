@@ -7,7 +7,10 @@ use File::Copy;
 use File::Path;
 use Template;
 use YAML 'LoadFile';
-use constant TT => '/home/dave/src/release';
+use constant TT   => '/home/dave/src/release';
+
+my $USER = 'mag-sol@mag-sol.com';
+my $DIR  = 'subdomains/code/httpdocs';
 
 die "Can't find META.yml\n" unless -f 'META.yml';
 die "META.yml is empty\n"   if -z 'META.yml';
@@ -51,5 +54,5 @@ chdir "$meta->{name}";
 system "zcat $ver.tar.gz | tar xvf -";
 move $ver, 'dist';
 chdir '..';
-system "ssh davorg\@dave.org.uk rm -rf httpdocs/code/$meta->{name}";
-system "scp -r ./$meta->{name} davorg\@dave.org.uk:httpdocs/code/";
+system "ssh $USER rm -rf $DIR/$meta->{name}";
+system "scp -r ./$meta->{name} $USER:$DIR/";

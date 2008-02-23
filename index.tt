@@ -5,14 +5,13 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <link rel="stylesheet" href="/dave.css" type="text/css" />
-    <link rel="stylesheet" href="/code/style.css" type="text/css" />
+    <link rel="stylesheet" href="/style.css" type="text/css" />
     <title>[% meta.name %]</title>
   </head>
   <body>
     <h1>[% meta.name %]</h1>
     <p>Current version [% meta.version %]</p>
-    <p>[% meta.abstract | html %]</p>
+    [% IF meta.abstract %]<p>[% meta.abstract | html %]</p>[% END %]
     <ul>
       <li>Download <a href="[% meta.name %]-[% meta.version %].tar.gz">latest version</a></li>
       <li>View <a href="dist/README">README</a></li>
@@ -21,10 +20,10 @@
       <li>Modules:
         <ul>[% IF meta.provides.keys.size;
              FOREACH module IN meta.provides.keys %]
-          <li><a href="/cgi-bin/pod?/code/[% meta.name %]/dist/[% meta.provides.$module.file %]">[% module %]</a> ([% meta.provides.$module.version %])</li>
+          <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.provides.$module.file %]">[% module %]</a> ([% meta.provides.$module.version %])</li>
             [% END %]
         [% ELSE %]
-          <li><a href="/cgi-bin/pod?/code/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
+          <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
         [% END %]</ul></li>
       <li>Browse <a href="http://svn.mag-sol.com/[% meta.name %]/">svn</a></li>
       <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a></li>
@@ -35,5 +34,12 @@
       <a href="perl-[% meta.name %]-[% meta.version %]-1.src.rpm">Source RPM</a></li>
 [% END -%]
     </ul>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-56332-3";
+urchinTracker();
+
+</script>
   </body>
 </html>
