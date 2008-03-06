@@ -27,7 +27,7 @@ if (-f 'Build.PL') {
 system "perl $build->{start}";
 system "cover -delete";
 system "HARNESS_PERL_SWITCHES=-MDevel::Cover $build->{cmd} test";
-system "cover";
+system "cover report html_basic";
 
 rmtree($meta->{name}) if -d $meta->{name};
 
