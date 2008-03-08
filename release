@@ -27,7 +27,7 @@ if (-f 'Build.PL') {
 system "perl $build->{start}";
 system "cover -delete";
 system "HARNESS_PERL_SWITCHES=-MDevel::Cover $build->{cmd} test";
-system "cover report html_basic";
+system "cover -report html_basic";
 
 rmtree($meta->{name}) if -d $meta->{name};
 
@@ -39,17 +39,24 @@ foreach (<cover_db/*.html>, <cover_db/*.css>) {
 }
 move "$meta->{name}/cover/coverage.html", "$meta->{name}/cover/index.html";
 
-my $rpm = -e "perl-$meta->{name}-$meta->{version}-1.noarch.rpm";
+my $ver = "$meta->{name}-$meta->{version}";
+system("cpanspec -b -f $ver.tar.gz");
+
+my $rpm = glob("noarch/perl-$meta->{name}-$meta->{version}-*.rpm");
+my $srcrpm = glob("perl-$meta->{name}-$meta->{version}-*.src.rpm");
 
 my $t = Template->new({INCLUDE_PATH => TT});
-$t->process('index.tt', { rpm => $rpm }, "$meta->{name}/index.html")
+$t->process('index.tt', { rpm => $rpm, srcrpm => $srcrpm },
+            "$meta->{name}/index.html")
   or die $t->error;
 
-my $ver = "$meta->{name}-$meta->{version}";
 copy "$ver.tar.gz", $meta->{name};
 if ($rpm) {
-  copy $_, $meta->{name} for <perl-*.rpm>
+  copy $rpm, $meta->{name};
+  $rpm =~ s|^noarch/||;
 }
+copy $srcrpm, $meta->{name} if $srcrpm;
+
 chdir "$meta->{name}";
 system "zcat $ver.tar.gz | tar xvf -";
 move $ver, 'dist';

@@ -27,12 +27,13 @@
         [% END %]</ul></li>
       <li>Browse <a href="http://svn.mag-sol.com/[% meta.name %]/">svn</a></li>
       <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a> /
-        <a href="http://cpants.perl.org/dist/overview/[% meta.name %]>CPANTS</a></li>
+        <a href="http://cpants.perl.org/dist/overview/[% meta.name %]">CPANTS</a></li>
       <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
       <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</a></li>
-[% IF rpm -%]
-      <li><a href="perl-[% meta.name %]-[% meta.version %]-1.noarch.rpm">RPM</a > /
-      <a href="perl-[% meta.name %]-[% meta.version %]-1.src.rpm">Source RPM</a></li>
+[% IF rpm OR srcrpm -%]
+      <li>Fedora 8 [% IF rpm %]<a href="[% rpm %]">RPM</a >[% END %]
+      [% IF rpm AND srcrpm %] &amp; [% END %]
+      [% IF srcrpm %]<a href="[% srcrpm %]">Source RPM</a>[% END %]</li>
 [% END -%]
     </ul>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
