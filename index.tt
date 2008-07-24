@@ -9,33 +9,37 @@
     <title>[% meta.name %]</title>
   </head>
   <body>
-    <h1>[% meta.name %]</h1>
-    <p>Current version [% meta.version %]</p>
-    [% IF meta.abstract %]<p>[% meta.abstract | html %]</p>[% END %]
-    <ul>
-      <li>Download <a href="[% meta.name %]-[% meta.version %].tar.gz">latest version</a></li>
-      <li>View <a href="dist/README">README</a></li>
-      <li>Browse <a href="dist">distribution</a></li>
-      <li>View <a href="cover">test coverage</a></li>
-      <li>Modules:
-        <ul>[% IF meta.provides.keys.size;
-             FOREACH module IN meta.provides.keys %]
-          <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.provides.$module.file %]">[% module %]</a> ([% meta.provides.$module.version %])</li>
-            [% END %]
-        [% ELSE %]
-          <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
-        [% END %]</ul></li>
-      <li>Browse <a href="http://svn.mag-sol.com/[% meta.name %]/">svn</a></li>
-      <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a> /
-        <a href="http://cpants.perl.org/dist/overview/[% meta.name %]">CPANTS</a></li>
-      <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
-      <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</a></li>
+    <div id="header">
+      <h1>[% meta.name %]</h1>
+    </div>
+    <div id="content">
+      <p>Current version [% meta.version %]</p>
+      [% IF meta.abstract %]<p>[% meta.abstract | html %]</p>[% END %]
+      <ul>
+        <li>Download <a href="[% meta.name %]-[% meta.version %].tar.gz">latest version</a></li>
+        <li>View <a href="dist/README">README</a></li>
+        <li>Browse <a href="dist">distribution</a></li>
+        <li>View <a href="cover">test coverage</a></li>
+        <li>Modules:
+          <ul>[% IF meta.provides.keys.size;
+                 FOREACH module IN meta.provides.keys %]
+            <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.provides.$module.file %]">[% module %]</a> ([% meta.provides.$module.version %])</li>
+              [% END %]
+              [% ELSE %]
+            <li><a href="/cgi-bin/pod?/[% meta.name %]/dist/[% meta.version_from %]">[% meta.version_from.split('/').last.replace('-', '::') %]</a> ([% meta.version %])</li>
+              [% END %]</ul></li>
+        <li>Browse <a href="http://svn.mag-sol.com/[% meta.name %]/">svn</a></li>
+        <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a> /
+          <a href="http://cpants.perl.org/dist/overview/[% meta.name %]">CPANTS</a></li>
+        <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
+        <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</a></li>
 [% IF rpm OR srcrpm -%]
-      <li>Fedora 8 [% IF rpm %]<a href="[% rpm %]">RPM</a >[% END %]
-      [% IF rpm AND srcrpm %] &amp; [% END %]
-      [% IF srcrpm %]<a href="[% srcrpm %]">Source RPM</a>[% END %]</li>
+        <li>Fedora 8 [% IF rpm %]<a href="[% rpm %]">RPM</a >[% END %]
+        [% IF rpm AND srcrpm %] &amp; [% END %]
+        [% IF srcrpm %]<a href="[% srcrpm %]">Source RPM</a>[% END %]</li>
 [% END -%]
-    </ul>
+      </ul>
+    </div>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">
