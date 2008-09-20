@@ -39,11 +39,11 @@ foreach (<cover_db/*.html>, <cover_db/*.css>) {
 }
 move "$meta->{name}/cover/coverage.html", "$meta->{name}/cover/index.html";
 
-my $ver = "$meta->{name}-$meta->{version}";
-system("cpanspec -b -f $ver.tar.gz");
+#my $ver = "$meta->{name}-$meta->{version}";
+#system("cpanspec -b -f $ver.tar.gz");
 
-my $rpm = glob("noarch/perl-$meta->{name}-$meta->{version}-*.rpm");
-my $srcrpm = glob("perl-$meta->{name}-$meta->{version}-*.src.rpm");
+#my $rpm = glob("noarch/perl-$meta->{name}-$meta->{version}-*.rpm");
+#my $srcrpm = glob("perl-$meta->{name}-$meta->{version}-*.src.rpm");
 
 my $t = Template->new({INCLUDE_PATH => TT});
 $t->process('index.tt', { rpm => $rpm, srcrpm => $srcrpm },
@@ -51,11 +51,11 @@ $t->process('index.tt', { rpm => $rpm, srcrpm => $srcrpm },
   or die $t->error;
 
 copy "$ver.tar.gz", $meta->{name};
-if ($rpm) {
-  copy $rpm, $meta->{name};
-  $rpm =~ s|^noarch/||;
-}
-copy $srcrpm, $meta->{name} if $srcrpm;
+i#if ($rpm) {
+#  copy $rpm, $meta->{name};
+#  $rpm =~ s|^noarch/||;
+#}
+#copy $srcrpm, $meta->{name} if $srcrpm;
 
 chdir "$meta->{name}";
 system "zcat $ver.tar.gz | tar xvf -";
