@@ -7,7 +7,7 @@ use File::Copy;
 use File::Path;
 use Template;
 use YAML 'LoadFile';
-use constant TT   => '/home/dave/src/release';
+use constant TT   => '/home/dave/git/release';
 
 my $USER = 'mag-sol@mag-sol.com';
 my $DIR  = 'subdomains/code/httpdocs';
