@@ -31,7 +31,7 @@
         <li>Browse <a href="http://github.com/davorg/[% meta.name | lower %]">source code repository</a></li>
         <li><a href="http://search.cpan.org/dist/[% meta.name %]/">CPAN</a> /
           <a href="http://cpants.perl.org/dist/overview/[% meta.name %]">CPANTS</a></li>
-        <li><a href="http://testers.cpan.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
+        <li><a href="http://cpantesters.org/show/[% meta.name %].html#[% meta.name %]-[% meta.version %]">Test results</a></li>
         <li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=[% meta.name %]">Report bugs</a></li>
       </ul>
     </div>
