@@ -7,15 +7,21 @@ use File::Copy;
 use File::Path;
 use Template;
 use YAML 'LoadFile';
-use constant TT   => '/home/dave/git/release';
+use constant TT   => "$ENV{HOME}/git/release";
 
 my $USER = 'mag-sol@mag-sol.com';
 my $DIR  = 'subdomains/code/httpdocs';
 
-die "Can't find META.yml\n" unless -f 'META.yml';
-die "META.yml is empty\n"   if -z 'META.yml';
+my $metafile;
+foreach (qw[MYMETA.yml META.yml]) {
+  if (-f $_ and ! -z $_) {
+    $metafile = $_;
+  }
+}
 
-my $meta = LoadFile('META.yml');
+die "Can't find MYMETA.yml or META.yml\n" unless -f $metafile;
+
+my $meta = LoadFile($metafile);
 
 my $build;
 if (-f 'Build.PL') {
@@ -46,7 +52,7 @@ my $ver = "$meta->{name}-$meta->{version}";
 #my $srcrpm = glob("perl-$meta->{name}-$meta->{version}-*.src.rpm");
 
 my $t = Template->new({INCLUDE_PATH => TT});
-$t->process('index.tt', { },
+$t->process('index.tt', { metafile => $metafile },
             "$meta->{name}/index.html")
   or die $t->error;
 
