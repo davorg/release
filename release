@@ -10,7 +10,20 @@ use YAML 'LoadFile';
 use constant TT   => "$ENV{HOME}/git/release";
 
 my $USER = 'mag-sol@mag-sol.com';
-my $DIR  = 'subdomains/code/httpdocs';
+my $DIR  = 'subdomains/code';
+
+my %build = (
+  build => {
+    start => './Build.PL',
+    cover => './Build testcover',
+    dist  => './Build dist', 
+  },
+  make => {
+    start => './Makefile.PL',
+    cover => 'HARNESS_PERL_SWITCHES=-MDevel::Cover make test',
+    dist  => 'make dist',
+  }
+);
 
 my $metafile;
 foreach (qw[MYMETA.yml META.yml]) {
@@ -25,15 +38,17 @@ my $meta = LoadFile($metafile);
 
 my $build;
 if (-f 'Build.PL') {
-  $build = { start => './Build.PL', cmd => './Build' };
+  $build = $build{build};
 } else {
-  $build = { start => './Makefile.PL', cmd => 'make' };
+  $build = $build{make};
 }
 
 system "perl $build->{start}";
-system "cover -delete";
-system "HARNESS_PERL_SWITCHES=-MDevel::Cover $build->{cmd} test";
-system "cover -report html_basic";
+system 'cover -delete';
+system $build->{cover};
+system 'cover -report html_basic';
+
+system $build->{dist};
 
 rmtree($meta->{name}) if -d $meta->{name};
 
